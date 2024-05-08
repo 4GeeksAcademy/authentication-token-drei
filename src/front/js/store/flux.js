@@ -2,18 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			token: null,
+            user: null,
+            logged: false,
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -21,6 +12,114 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
+			printStore: () => {
+				return getStore
+			},
+
+
+			createUser: async (userName, email, password) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/signUp", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						
+						body: JSON.stringify({
+							"user_name": userName,
+							"email": email,
+							"password": password
+						})
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						console.log(data)
+						return true;
+					} else {
+						alert("There has been some error, please check it out.");
+						return false;
+					}
+				} catch (error) {
+					console.error("There was an error:", error);
+					return false;
+				}
+			},
+
+			loginUser: async (email, password) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/login", {
+						method: "POST",
+						body: JSON.stringify({
+							"email": email,
+							"password": password
+						}),
+						headers: {
+							"Content-Type": "application/json",
+							'Accept': 'application/json'
+						}
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						console.log(data)
+						setStore({
+							message: null,
+							user: data.user.email,
+							token: data.token,
+							logged: true
+						});
+						console.log(data.token)
+						console.log(data.user.email)
+						sessionStorage.setItem("token", data.token);
+						sessionStorage.setItem("userID", data.user.id);
+						/* window.location = '/private';  */
+						
+						console.log(getStore.data)
+						console.log(getState)
+						return true;
+					} else {
+						alert("There has been some error, please check it out.");
+						return false;
+					}
+				} catch (error) {
+					console.error("There was an error:", error);
+					return false;
+				}
+			},
+
+			verifyToken: async () =>{
+
+				const token = sessionStorage.getItem("token");
+				
+				try{
+					if (!token) {
+						// Si no hay token, el usuario no está autenticado
+						setStore({ logged: false });
+						window.location = '/login';
+						return;
+					}
+								
+				}
+				catch (error){
+					console.error('idk what happened but u have an error g')
+					setStore({ logged: false });
+					return false
+				}
+								
+			},
+
+			logout: async () => {
+				setStore({
+					message: null,
+					user: null,
+					token: null,
+					logged: false
+				});
+
+				return ("a la mierda")
+			},
+			
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
