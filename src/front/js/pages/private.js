@@ -7,7 +7,7 @@ export const Private = () => {
 	const { store, actions } = useContext(Context);
 
 	const navigate = useNavigate();
-	const [countdown, setCountdown] = useState(10); // Contador inicializado en 10 segundos
+	const [countdown, setCountdown] = useState(); // Contador inicializado en 10 segundos
 
 	const handleLogout = async(e) => {
 		e.preventDefault();
@@ -33,45 +33,48 @@ export const Private = () => {
 	console.log(store)
 
 
-	useEffect(() => {
-
-		const timer = setTimeout(() => {
-			navigate('/');
-		}, 10000);
+	/* useEffect(() => {
+		const miPoya = async () => {
+		const result = await actions.verifyToken();
 
 		const interval = setInterval(() => {
 			setCountdown(prevCountdown => prevCountdown - 1);
 		}, 1000); // Actualizar el contador cada segundo
 
-		return () => {
-		clearTimeout(timer); // Limpiar el temporizador al desmontar el componente
-		clearInterval(interval); // Limpiar el intervalo al desmontar el componente
-		};
-
-	}, [navigate, 10000]);
-
-	return <div>Returning to Home in {countdown} seconds...</div>;
+			if (!result) {const timer = setTimeout(() => {
+				navigate('/');
+			}, 10000);
 	
+			return () => {
+			clearTimeout(timer); // Limpiar el temporizador al desmontar el componente
+			clearInterval(interval); // Limpiar el intervalo al desmontar el componente
+			<div>Returning to Home in {countdown} seconds...</div>;
+			}}
+		}
+		miPoya()
+	}, [navigate, 10000]);  */
 
 	return (
-		<div className="text-center mt-5">
+		<div className="text-center mb-5">
 			<h1>Private</h1>
-			<p>damn boy how did u got here</p>
+			
 
 			
 
 			{store.logged === true && (
 				<div>
-					<h1>Welcome, {store.user.email}!</h1>
+					<h1>Welcome, {store.user}!</h1>
 					<p><strong>Classified Information</strong></p>
-					<button onClick={handleLogout}>Logout</button>
+					<button className="btnPrivate" onClick={handleLogout}>Logout</button>
 				</div>
 			)}
 			{store.logged === false && (
-				<div>
-					{returnToHomeWithTimer()}
+				<div className="privateTypeShi">
+					{/* {returnToHomeWithTimer()} */}
+					<p>damn boy how did u got here</p>
 					<h1>Unauthorized</h1>
-					<p>You only could access with the correct credentials.</p>
+					<p>You can only access with the correct credentials.</p>
+					<button className="btnPrivate" onClick={handleLogout}>Go Home</button>
 									
 				</div>
 			)}

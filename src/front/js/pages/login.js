@@ -27,39 +27,53 @@ export const Login = () => {
 
 	}
 
+	const handleGoToSignUp = (e) => {
+		navigate('/')
+	}
+
 
 	return (
-		<div className="text-center mt-5">
-			<h2>Login</h2>
-			<form>
-				<div>
-					<label className="" htmlFor="email">Email:</label>
-					<input
-						type="email" 
-						id="email" 
-						name="email" 
-						value={email}
-						placeholder= "your Email"
-						onChange={(e)=> setEmail(e.target.value)} 
+		<div className="m-5">
+			<div className="backgroundLogin d-flex">
+				<form className="my-form">
+					<h2 className="mt-5 mb-5">Log In</h2>
+					<div className="text-field">
+						<label className="" htmlFor="email"></label>
+						<input
+							type="email" 
+							id="email" 
+							name="email" 
+							value={email}
+							placeholder= "Email"
+							onChange={(e)=> setEmail(e.target.value)} 
+							required/>
+					</div>
+					<div className="text-field">
+						<label className="" htmlFor="password"></label>
+						<input
+						type="password" 
+						id="password" 
+						name="password" 
+						value={password}
+						placeholder= "Password"
+						onChange={(e)=> setPassword(e.target.value)}
 						required/>
+					</div>
+					<div className="yurButton mt-4">
+							<button onClick={handleClick}  
+							className=""
+							type="submit">Log in
+							</button>					
+					</div>
+				</form>
+				<div className="round">
+						<h6 className="insideRound">Don't have an account?</h6>
+						<button onClick={handleGoToSignUp}  
+							className="insideRound"
+							type="submit">Sign up
+						</button>	
 				</div>
-				<div>
-					<label className="" htmlFor="password">Password:</label>
-					<input
-					type="password" 
-					id="password" 
-					name="password" 
-					value={password}
-					placeholder= "password"
-					onChange={(e)=> setPassword(e.target.value)}
-					required/>
-				</div>
-				<div>
-					<Link to="/private">
-						<button onClick={handleClick} type="submit">Login</button>
-					</Link>
-				</div>
-			</form>
+			</div>
 		</div>
 	);
 };

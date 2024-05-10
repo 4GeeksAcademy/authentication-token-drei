@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/login.css";
+import "../../styles/signUp.css";
+import 'tailwindcss/tailwind.css';
 import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
@@ -33,54 +34,66 @@ export const SignUp = () => {
         else {
             return ({"error": "Sign Up failed. Please check your credentials."});
         }
+	}
 
-
+	const handleGoToLogIn = (e) => {
+		navigate('/login')
 	}
 
 
 	return (
-		<div className="text-center mt-5">
-			<h2>Sign Up</h2>
-			<form>
-				<div>
-					<label className="" htmlFor="email">User name:</label>
-					<input
-						type="text" 
-						id="newEmail" 
-						name="newEmail" 
-						value={userName}
-						placeholder= "your username"
-						onChange={(e)=> setUserName(e.target.value)} 
+		<div className="m-5">
+			<div className="backgroundLogin d-flex">
+				<form className="my-form">
+					<h2 className="mt-5 mb-5">Sign Up</h2>
+					<div className="text-field">
+						<label className="" htmlFor="email"></label>
+						<input
+							type="text" 
+							id="newEmail" 
+							name="newEmail" 
+							value={userName}
+							placeholder= "Username"
+							onChange={(e)=> setUserName(e.target.value)} 
+							required/>
+					</div>
+					<div className="text-field">
+						<label className="" htmlFor="email"></label>
+						<input
+							type="email" 
+							id="email" 
+							name="email" 
+							value={email}
+							placeholder= "Email"
+							onChange={(e)=> setEmail(e.target.value)} 
+							required/>
+					</div>
+					<div className="text-field">
+						<label className="" htmlFor="password"></label>
+						<input
+						type="password" 
+						id="password" 
+						name="password" 
+						value={password}
+						placeholder= "Password"
+						onChange={(e)=> setPassword(e.target.value)}
 						required/>
+					</div>
+					<div className="yurButton mt-4">
+							<button onClick={handleClick}  
+							className=""
+							type="submit">Sign up
+							</button>					
+					</div>
+				</form>
+				<div className="round">
+						<h6 className="insideRound">Already a member?</h6>
+						<button onClick={handleGoToLogIn}  
+							className="insideRound"
+							type="submit">Log in
+						</button>	
 				</div>
-				<div>
-					<label className="" htmlFor="email">Email:</label>
-					<input
-						type="email" 
-						id="email" 
-						name="email" 
-						value={email}
-						placeholder= "your email"
-						onChange={(e)=> setEmail(e.target.value)} 
-						required/>
-				</div>
-				<div>
-					<label className="" htmlFor="password">Password:</label>
-					<input
-					type="password" 
-					id="password" 
-					name="password" 
-					value={password}
-					placeholder= "your password"
-					onChange={(e)=> setPassword(e.target.value)}
-					required/>
-				</div>
-				<div>
-					
-						<button onClick={handleClick} type="submit">Sign Up</button>
-					
-				</div>
-			</form>
+			</div>
 		</div>
 	);
 };

@@ -56,7 +56,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}),
 						headers: {
 							"Content-Type": "application/json",
-							'Accept': 'application/json'
+							'Accept': 'application/json',
+							mode: 'no-cors',
 						}
 					});
 			
@@ -75,7 +76,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						sessionStorage.setItem("userID", data.user.id);
 						/* window.location = '/private';  */
 						
-						console.log(getStore.data)
+						console.log(store)
 						console.log(getState)
 						return true;
 					} else {
@@ -97,7 +98,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// Si no hay token, el usuario no está autenticado
 						setStore({ logged: false });
 						window.location = '/login';
-						return;
+						return false;
 					}
 								
 				}
@@ -106,6 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ logged: false });
 					return false
 				}
+				return true
 								
 			},
 
@@ -123,7 +125,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch(process.env.BACKEND_URL + "/api/hello",{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							mode: 'no-cors',
+						},
+						
+						body: JSON.stringify({
+							"user_name": userName,
+							"email": email,
+							"password": password
+						})
+					});
+					
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
